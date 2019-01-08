@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="perl,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="这周遇到一个需求，统计一个巨大的工程的第一次提交和最后一次提交，修改了多少代码，一开始我们自然而然想到了git diff，但是git diff 既不会去除注释也不会去除空行，这就给我们造成了很大麻烦，于是我们搜索了一番github，发现了Cloc这样一个工具，自带diff两次commit的功能，非常的方便，但是当我们实地测试的时候却发现，由于我们的项目太大，直接导致一个Argument list">
+<meta name="keywords" content="perl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对Cloc的一点改进">
+<meta property="og:url" content="http://www.hawli.cn/2018/07/18/对Cloc的一点改进/index.html">
+<meta property="og:site_name" content="李科燃的主页">
+<meta property="og:description" content="这周遇到一个需求，统计一个巨大的工程的第一次提交和最后一次提交，修改了多少代码，一开始我们自然而然想到了git diff，但是git diff 既不会去除注释也不会去除空行，这就给我们造成了很大麻烦，于是我们搜索了一番github，发现了Cloc这样一个工具，自带diff两次commit的功能，非常的方便，但是当我们实地测试的时候却发现，由于我们的项目太大，直接导致一个Argument list">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-01T14:06:42.786Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对Cloc的一点改进">
+<meta name="twitter:description" content="这周遇到一个需求，统计一个巨大的工程的第一次提交和最后一次提交，修改了多少代码，一开始我们自然而然想到了git diff，但是git diff 既不会去除注释也不会去除空行，这就给我们造成了很大麻烦，于是我们搜索了一番github，发现了Cloc这样一个工具，自带diff两次commit的功能，非常的方便，但是当我们实地测试的时候却发现，由于我们的项目太大，直接导致一个Argument list">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.hawli.cn/2018/07/18/对Cloc的一点改进/">
+
+
+
+
+
+  <title>对Cloc的一点改进 | 李科燃的主页</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李科燃的主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">临河而羡鱼，不如归家织网</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.hawli.cn/2018/07/18/对Cloc的一点改进/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李科燃">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/11769524?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李科燃的主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">对Cloc的一点改进</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T20:35:00+08:00">
+                2018-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">工作笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这周遇到一个需求，统计一个巨大的工程的第一次提交和最后一次提交，修改了多少代码，一开始我们自然而然想到了git diff，但是git diff 既不会去除注释也不会去除空行，这就给我们造成了很大麻烦，于是我们搜索了一番github，发现了Cloc这样一个工具，自带diff两次commit的功能，非常的方便，但是当我们实地测试的时候却发现，由于我们的项目太大，直接导致一个<code>Argument list too long error</code>，这样一个错误。导致无法执行。经过一番搜索，我们发现要想解决这个问题，有两个选择，一是修改cloc源码，二是重新编译linux内核修改<code>MAX_ARG_PAGES</code>这个参数。经过一番挣扎，我觉得重新编译linux内核实在是最佳方案，不用改代码，风险最小。所以我们选择了修改Cloc源码。<br>首先我们找到导致报错的根本原因。<br><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> <span class="string">"-&gt; git_archive($File_Set[0])\n"</span> <span class="keyword">if</span> $opt_v &gt; <span class="number">2</span>;</span><br><span class="line"><span class="keyword">my</span> ($Tarfh, $Tarfile) = tempfile(<span class="string">UNLINK =&gt;</span> <span class="number">1</span>, <span class="string">SUFFIX =&gt;</span> $ON_WINDOWS ? <span class="string">'.zip'</span> : <span class="string">'.tar'</span>);  <span class="comment"># delete on exit</span></span><br><span class="line"><span class="keyword">my</span> $cmd = <span class="string">"git archive -o $Tarfile $File_Set[0]"</span>;</span><br><span class="line"><span class="keyword">print</span>  $cmd, <span class="string">"\n"</span> <span class="keyword">if</span> $opt_v;</span><br><span class="line"><span class="keyword">system</span> $cmd;</span><br><span class="line"><span class="keyword">if</span> (!-r $Tarfile <span class="keyword">or</span> !-<span class="keyword">s</span> $Tarfile) &#123;</span><br><span class="line">    <span class="comment"># not readable, or zero sized</span></span><br><span class="line">    <span class="keyword">die</span> <span class="string">"Failed to create tarfile of files from git."</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从代码可以看出，由于程序不假思索的用<code>system</code>执行了<code>$cmd</code>，当<code>$cmd</code>非常庞大的时候，程序就会出错。</p>
+<p>我们的优化方案就从这里入手，我的思路是，判断，当<code>$cmd</code>大于1000条文件路径时，就把<code>$cmd</code>拆分为数组，每一千条文件路径，合并成一条命令，也就是说，如果是999条文件路径，则程序不发生任何改变，执行下去就好。如果超出了一千，就分多次执行，最后合并执行结果。最后实验结果证明思路可行，性能略低于git diff 但是完全不影响使用。</p>
+<p>最后，show code:<br><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">my</span> ($Tarfh, $Tarfile) = tempfile(<span class="string">UNLINK =&gt;</span> <span class="number">1</span>, <span class="string">SUFFIX =&gt;</span> $ON_WINDOWS ? <span class="string">'.zip'</span> : <span class="string">'.tar'</span>);  <span class="comment"># delete on exit</span></span><br><span class="line"><span class="keyword">my</span> $cmd = <span class="string">"git archive -o $Tarfile $File_Set[0]"</span>;</span><br><span class="line"><span class="keyword">print</span>  $cmd, <span class="string">"\n"</span> <span class="keyword">if</span> $opt_v;</span><br><span class="line"><span class="comment"># system $cmd;</span></span><br><span class="line"><span class="comment"># print "\n";</span></span><br><span class="line"><span class="comment"># print $n_sets;</span></span><br><span class="line"><span class="comment"># print "\n";</span></span><br><span class="line"><span class="comment"># print $File_Set[0];</span></span><br><span class="line"><span class="keyword">my</span> @cmds = <span class="keyword">split</span>(<span class="regexp">/ /</span>, $File_Set[<span class="number">0</span>]);</span><br><span class="line"><span class="keyword">my</span> $commit_id = <span class="keyword">shift</span> @cmds;</span><br><span class="line"><span class="keyword">my</span> $cmds_len = @cmds;</span><br><span class="line"><span class="keyword">my</span> $flag = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">my</span> $onecmd = <span class="string">""</span>;</span><br><span class="line"><span class="comment"># print $cmds_len, "长度\n";</span></span><br><span class="line"><span class="comment"># die "I kill this";</span></span><br><span class="line"><span class="keyword">if</span> ($cmds_len &gt; <span class="number">1000</span>)&#123;</span><br><span class="line">    <span class="comment"># print "&gt;1000\n";</span></span><br><span class="line">    <span class="keyword">my</span> @cmds_array;</span><br><span class="line">    <span class="keyword">while</span> (@cmds &gt; <span class="number">1000</span>)&#123;</span><br><span class="line">        <span class="keyword">my</span> @tmp_list;</span><br><span class="line">        <span class="keyword">my</span> @tmp_len = (<span class="number">1</span>..<span class="number">1000</span>);</span><br><span class="line">        <span class="keyword">foreach</span> <span class="keyword">my</span> $delcmd (@tmp_len)&#123;</span><br><span class="line">            <span class="keyword">push</span>(@tmp_list, <span class="keyword">shift</span> @cmds);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">my</span> $tmp_list_len = @tmp_list;</span><br><span class="line">        <span class="comment"># print $tmp_list_len, "tmp list len\n";</span></span><br><span class="line">        <span class="keyword">my</span> $tmp_cmd = <span class="keyword">join</span> <span class="string">" "</span>, @tmp_list;</span><br><span class="line">        <span class="keyword">push</span>(@cmds_array, $tmp_cmd);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">my</span> $tmp_cmd = <span class="keyword">join</span> <span class="string">" "</span>, @cmds;</span><br><span class="line">    <span class="keyword">push</span>(@cmds_array, $tmp_cmd);</span><br><span class="line">    <span class="keyword">my</span> $cmds_array_len = @cmds_array;</span><br><span class="line">    <span class="comment"># print $cmds_array_len, "cmds_array\n";</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> <span class="keyword">my</span> $c (@cmds_array) &#123;</span><br><span class="line">        <span class="keyword">if</span> ($flag == <span class="number">0</span>) &#123;</span><br><span class="line">            $onecmd = <span class="string">"git archive -o <span class="subst">$&#123;Tarfile&#125;</span> $commit_id $c"</span>;</span><br><span class="line">            $flag = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">system</span> $onecmd;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            $onecmd = <span class="string">"git archive -o <span class="subst">$&#123;Tarfile&#125;</span>_extra $commit_id $c"</span>;</span><br><span class="line">            <span class="keyword">print</span>  $onecmd, <span class="string">"\n"</span> <span class="keyword">if</span> $opt_v;</span><br><span class="line">            <span class="keyword">system</span> $onecmd;</span><br><span class="line">            $onecmd = <span class="string">"tar -A -f <span class="subst">$&#123;Tarfile&#125;</span> <span class="subst">$&#123;Tarfile&#125;</span>_extra"</span>;</span><br><span class="line">            <span class="keyword">print</span>  $onecmd, <span class="string">"\n"</span> <span class="keyword">if</span> $opt_v;</span><br><span class="line">            <span class="keyword">system</span> $onecmd;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"># print $flag, $onecmd, "\n";</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">system</span> $cmd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样一个简单的命令拆分，就解决了一个很烦人的性能问题，是不是很6。<br>最后，本次改动已经提交<a href="https://github.com/AlDanial/cloc/pull/310/commits/31e9bd9301019d641e5880a1954a388ba54747b7" target="_blank" rel="noopener">Pull requests</a>，想要获取我修改过的代码可以点击<a href="https://github.com/hawkli-1994/cloc/blob/master/cloc" target="_blank" rel="noopener">这里</a>获取。<br>想要查看原版代码可以点击<a href="https://github.com/AlDanial/cloc" target="_blank" rel="noopener">这里</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://book-1251415178.costj.myqcloud.com/wx.jpg" alt="李科燃 WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://book-1251415178.costj.myqcloud.com/alipay.jpg" alt="李科燃 Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/perl/" rel="tag"># perl</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/16/刻意练习/" rel="next" title="刻意练习">
+                <i class="fa fa-chevron-left"></i> 刻意练习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/04/tqdm中文文档/" rel="prev" title="tqdm文档">
+                tqdm文档 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://avatars0.githubusercontent.com/u/11769524?s=460&v=4" alt="李科燃">
+          <p class="site-author-name" itemprop="name">李科燃</p>
+           
+              <p class="site-description motion-element" itemprop="description">世界尽头的海，原来是我心潮的澎湃声</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hawkli-1994" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李科燃</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+  主题 -
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
