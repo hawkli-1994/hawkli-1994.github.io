@@ -4,99 +4,278 @@
   <url>
     <loc>https://hawli.cn/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E4%B8%BB%E9%A1%B5/index.html</loc>
     
-    <lastmod>2020-07-22T15:18:37.504Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://hawli.cn/tags/index.html</loc>
     
-    <lastmod>2020-07-22T15:18:37.504Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://hawli.cn/about/index.html</loc>
-    
-    <lastmod>2020-07-22T15:18:37.501Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://hawli.cn/categories/index.html</loc>
     
-    <lastmod>2020-07-22T15:18:37.501Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
-    <loc>https://hawli.cn/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-03-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/</loc>
+    <loc>https://hawli.cn/about/index.html</loc>
     
-    <lastmod>2020-07-22T15:18:37.500Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://hawli.cn/2017/11/10/PythonHooking/</loc>
-    
-    <lastmod>2020-07-22T15:18:37.500Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://hawli.cn/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-01-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/</loc>
     
-    <lastmod>2020-07-22T15:18:37.500Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
-    <loc>https://hawli.cn/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-02-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/</loc>
+    <loc>https://hawli.cn/2017/11/10/PythonHooking/</loc>
     
-    <lastmod>2020-07-22T15:18:37.500Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://hawli.cn/2018/04/09/swag%E6%B3%A8%E8%A7%A3%E6%8C%87%E5%8D%97/</loc>
     
-    <lastmod>2020-07-22T15:18:37.500Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
-    <loc>https://hawli.cn/2018/04/02/Python-asyncio%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/</loc>
+    <loc>https://hawli.cn/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-03-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/</loc>
     
-    <lastmod>2020-07-22T15:18:37.499Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://hawli.cn/2018/04/03/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-03-%E4%BD%BF%E7%94%A8Redis/</loc>
-    
-    <lastmod>2020-07-22T15:18:37.499Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
-    <loc>https://hawli.cn/2018/04/13/Go-%E8%AF%AD%E8%A8%80-struct%E8%BD%ACmap%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/</loc>
+    <loc>https://hawli.cn/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-02-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/</loc>
     
-    <lastmod>2020-07-22T15:18:37.499Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://hawli.cn/2018/04/03/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-02-%E4%BD%BF%E7%94%A8MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     
-    <lastmod>2020-07-22T15:18:37.499Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/2018/04/02/Python-asyncio%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/</loc>
+    
+    <lastmod>2020-07-22</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/2018/04/13/Go-%E8%AF%AD%E8%A8%80-struct%E8%BD%ACmap%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/</loc>
+    
+    <lastmod>2020-07-22</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/2018/04/03/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-03-%E4%BD%BF%E7%94%A8Redis/</loc>
+    
+    <lastmod>2020-07-22</lastmod>
     
   </url>
   
   <url>
     <loc>https://hawli.cn/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/</loc>
     
-    <lastmod>2020-07-22T15:18:37.498Z</lastmod>
+    <lastmod>2020-07-22</lastmod>
     
+  </url>
+  
+
+  <url>
+    <loc>https://hawli.cn/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>https://hawli.cn/tags/Python/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/Go/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/web/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/framework/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/gin%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/MySQL/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/Redis/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/Golang/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/python/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/asyncio/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/Python-%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/swag/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/swagger/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/tags/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>https://hawli.cn/categories/Python/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/categories/Golang/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/categories/%E5%85%B6%E4%BB%96/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://hawli.cn/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2020-12-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
   </url>
   
 </urlset>
