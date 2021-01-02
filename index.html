@@ -163,6 +163,99 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://hawli.cn/2020/12/13/Raft%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李科燃">
+      <meta itemprop="description" content="早告别青春，活成了别人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李科燃的主页">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/13/Raft%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">mit-6.824-Lab2(最后更新时间2020/12/13)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-13 14:49:00 / Modified: 15:34:41" itemprop="dateCreated datePublished" datetime="2020-12-13T14:49:00+08:00">2020-12-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mit6-824/" itemprop="url" rel="index"><span itemprop="name">mit6.824</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2020/12/13/Raft%E4%BB%8B%E7%BB%8D/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2020/12/13/Raft%E4%BB%8B%E7%BB%8D/" class="cy_cmt_count" data-xid="2020/12/13/Raft介绍/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>mit 6.824是一个很好的学习分布式的项目<br>Lab2 是一个raft项目。</p>
+<h3 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h3><ul>
+<li><a href="%22https://pdos.csail.mit.edu/6.824/%22">项目主页</a></li>
+<li><a href="%22https://pdos.csail.mit.edu/6.824/labs/lab-raft.html%22">Lab2</a></li>
+<li><a href="%22https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf%22">论文地址</a></li>
+<li><a href="%22https://www.infoq.cn/article/raft-paper%22">中文翻译</a></li>
+</ul>
+<blockquote>
+<p>介绍<br><br>这是一系列实验中的第一个，你将在其中构建容错的键/值存储系统。在本实验中，你将实现Raft（复制状态机协议）。在下一个实验中，你将在Raft之上构建键/值服务。然后，你将在多个复制的状态机上“分片”服务，以提高性能。<br><br>复制服务通过将其状态（即数据）的完整副本存储在多个副本服务器上来实现容错功能。即使服务的某些服务器出现故障（崩溃，网络故障或不稳定），复制也可以使服务继续运行。挑战在于，故障可能导致副本持有不同的数据副本。<br><br><br>Raft将客户请求组织成一个序列，称为日志，并确保所有副本服务器看到相同的日志。每个副本都以日志顺序执行客户端请求，并将其应用于服务状态的本地副本。由于所有活动复本都看到相同的日志内容，因此它们都以相同的顺序执行相同的请求，因此继续具有相同的服务状态。如果服务器出现故障但后来又恢复了，Raft会确保其日志为最新状态。只要至少大多数服务器都处于活动状态并且可以相互通信，筏将继续运行。如果没有这样的多数，Raft将不会取得进展，但是一旦多数能够再次交流，它将从停下来的地方继续前进。<br><br><br>在本实验中，你将通过关联的方法将Raft实现为Go对象类型，该方法旨在用作更大服务中的模块。一组Raft实例与RPC相互通信以维护复制的日志。你的Raft界面将支持不定编号的命令序列，也称为日志条目。这些条目已用索引号编号。具有给定索引的日志条目最终将被提交。届时，你的Raft应该将日志条目发送到较大的服务，以便其执行。<br><br><br>你应该遵循扩展的Raft论文中的设计，尤其要注意图2。你将实现论文中的大部分内容，包括保存持久状态并在节点出现故障后重新读取它。你将不会实现集群成员资格更改（第6节）。你将在以后的实验中实现日志压缩/快照化（第7节）。<br><br><br>你可能会发现本指南很有用，以及有关锁定和并发结构的建议。从更广泛的角度来看，请查看Paxos，Chubby，Paxos Made Live，Spanner，Zookeeper，Harp，Viewstamped Replication和Bolosky等。<br><br><br>该实验分为三个部分。你必须在相应的截止日期之前提交每个零件。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://hawli.cn/2018/04/13/Go-%E8%AF%AD%E8%A8%80-struct%E8%BD%ACmap%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -207,6 +300,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/13/Go-%E8%AF%AD%E8%A8%80-struct%E8%BD%ACmap%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/13/Go-%E8%AF%AD%E8%A8%80-struct%E8%BD%ACmap%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/" class="cy_cmt_count" data-xid="2018/04/13/Go-语言-struct转map的三种方法/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -290,6 +399,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/09/swag%E6%B3%A8%E8%A7%A3%E6%8C%87%E5%8D%97/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/09/swag%E6%B3%A8%E8%A7%A3%E6%8C%87%E5%8D%97/" class="cy_cmt_count" data-xid="2018/04/09/swag注解指南/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -539,6 +664,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-03-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-03-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/" class="cy_cmt_count" data-xid="2018/04/03/设计模式-03-单例模式-Python实现/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -613,6 +754,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-02-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-02-%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/" class="cy_cmt_count" data-xid="2018/04/03/设计模式-02-抽象工厂模式-Python实现/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -687,6 +844,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-01-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-01-%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-Python%E5%AE%9E%E7%8E%B0/" class="cy_cmt_count" data-xid="2018/04/03/设计模式-01-简单工厂模式-Python实现/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -761,6 +934,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/03/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-03-%E4%BD%BF%E7%94%A8Redis/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/03/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-03-%E4%BD%BF%E7%94%A8Redis/" class="cy_cmt_count" data-xid="2018/04/03/Gin-系列教程-03-使用Redis/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -839,6 +1028,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/03/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-02-%E4%BD%BF%E7%94%A8MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/03/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-02-%E4%BD%BF%E7%94%A8MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/" class="cy_cmt_count" data-xid="2018/04/03/Gin-系列教程-02-使用MySQL数据库/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -931,6 +1136,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/02/Python-asyncio%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/02/Python-asyncio%E6%A8%A1%E5%9D%97%E8%AF%A6%E8%A7%A3/" class="cy_cmt_count" data-xid="2018/04/02/Python-asyncio模块详解/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -1024,6 +1245,22 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/" class="cy_cmt_count" data-xid="2018/04/02/Gin-系列教程-01/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
 
         </div>
       </header>
@@ -1075,85 +1312,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://hawli.cn/2017/11/10/PythonHooking/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="李科燃">
-      <meta itemprop="description" content="早告别青春，活成了别人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李科燃的主页">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/11/10/PythonHooking/" class="post-title-link" itemprop="url">博客迁移到腾讯云啦!</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-11-10 10:34:00" itemprop="dateCreated datePublished" datetime="2017-11-10T10:34:00+08:00">2017-11-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-22 23:18:37" itemprop="dateModified" datetime="2020-07-22T23:18:37+08:00">2020-07-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一开始，是学着人家在github pages弄了一个主页，但是一直也没去维护，而且国内访问速度也不好。再加上也没有细心去研究hexo，不知道还有hexo admin这样好用的插件（最主要的原因还是懒）。所以博客就一直荒废着，平时都是在简书上更新。<br>昨天在本地安装了插件以后，发现异乎寻常的好用。于是我就决定把博客迁移到腾讯云上，说干就干，我当场就格式化了我的那台单核1G的一元学生机（这里真的要感谢腾讯云，没有这个优惠，一个月65元的服务器费用我是万万承受不起的），格式化以后还有意外之喜，本来云硬盘只有20G，现在有50G了，悄无声息的增加了30G。<br>首先是安装node环境，装好hexo，然后从github上把项目下载下来，配置好deploy命令。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo d</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;auto push&quot;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
-<p>这样就实现了在部署完毕之后，自动把博客的源代码保存到github上。<br>然后我又给博客配置了一个blog域名，开启了CDN加速，但是随即出现了一个问题，就是当我更新了博客以后，cdn是不会刷新的。于是我翻阅了腾讯云CDN的文档，发现他们提供了主动刷新cdn的api，于是我用python写了一个调用cdn的脚本，并把调用命令添加到deploy脚本里面。为了保护我的key，我把这个脚本编译成了二进制文件。<br>这样每次我更新博客的时候，就会触发cdn刷新。<br>这样就实现了，只要有浏览器，我就能随时更新博客的效果了。</p>
-<h5 id="后续："><a href="#后续：" class="headerlink" title="后续："></a>后续：</h5><p>CDN有点坑，不好使。现在的部署方式改为同时部署在github和coding上，通过DNS解析，使得国内访问就走coding，国外访问就走github，这样国内访问速度的提升还是很大的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -1218,20 +1381,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1263,7 +1426,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1322,6 +1485,9 @@
   
 
   
+
+  <script id="cy_cmt_num" src="https://changyan.sohu.com/upload/plugins/plugins.list.count.js?clientId=cyveItGXa"></script>
+
 
 </body>
 </html>
