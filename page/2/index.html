@@ -163,6 +163,121 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://hawli.cn/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李科燃">
+      <meta itemprop="description" content="早告别青春，活成了别人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李科燃的主页">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/" class="post-title-link" itemprop="url">Gin 系列教程 (01)-介绍</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-02 15:36:00" itemprop="dateCreated datePublished" datetime="2018-04-02T15:36:00+08:00">2018-04-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-22 23:18:37" itemprop="dateModified" datetime="2020-07-22T23:18:37+08:00">2020-07-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/" class="cy_cmt_count" data-xid="2018/04/02/Gin-系列教程-01/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近由于工作需要，需要把部分接口迁移到Go语言上，优化部分性能。经过一番考察后，我选择了<a target="_blank" rel="noopener" href="https://github.com/gin-gonic/gin">gin</a>这款轻量级的web框架，用来开发restful api。<br><img src="https://raw.githubusercontent.com/gin-gonic/logo/master/color.png"><br>首先看一下官方的介绍：</p>
+<blockquote>
+<p>Gin is a web framework written in Go (Golang). It features a martini-&gt; like API with much better performance, up to 40 times faster thanks &gt; to httprouter. If you need performance and good productivity, you &gt; will love Gin.</p>
+</blockquote>
+<p> 据说性能是martini的40倍，好吧，martini我也没接触过。</p>
+<p> 然后看官方给出的一个例子：</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(<span class="string">&quot;/ping&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		c.JSON(<span class="number">200</span>, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;message&quot;</span>: <span class="string">&quot;pong&quot;</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.Run() <span class="comment">// listen and serve on 0.0.0.0:8080</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 然后运行这个例子， 默认是监听8080端口<br> <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go run example.go</span><br></pre></td></tr></table></figure></p>
+<h3 id="下载和安装"><a href="#下载和安装" class="headerlink" title="下载和安装"></a>下载和安装</h3> <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go get github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure>
+<p> 这里要提到一个小技巧，国内由于各种原因，导致go get 几乎处于不可用的状态，如果你有ss的话，可以使用<a target="_blank" rel="noopener" href="https://github.com/cyfdecyf/cow">cow</a>这个工具，把go get 的http请求转发给ss代理，这样在命令行里使用go get 就会比较顺畅了。</p>
+<ul>
+<li>import<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="govendor"><a href="#govendor" class="headerlink" title="govendor"></a><a target="_blank" rel="noopener" href="https://github.com/kardianos/govendor">govendor</a></h3><p>也可以使用govendor这样的工具，来构建项目。</p>
+<h5 id="1-安装govendor"><a href="#1-安装govendor" class="headerlink" title="1.安装govendor"></a>1.安装govendor</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go get github.com/kardianos/govendor</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-创建你的项目文件夹"><a href="#2-创建你的项目文件夹" class="headerlink" title="2.创建你的项目文件夹"></a>2.创建你的项目文件夹</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p <span class="variable">$GOPATH</span>/src/github.com/myusername/project &amp;&amp; <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$_</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-初始化项目并安装gin"><a href="#3-初始化项目并安装gin" class="headerlink" title="3.初始化项目并安装gin"></a>3.初始化项目并安装gin</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ govendor init</span><br><span class="line">$ govendor fetch github.com/gin-gonic/gin@v1.2</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-复制初始模板到你的项目中"><a href="#4-复制初始模板到你的项目中" class="headerlink" title="4.复制初始模板到你的项目中"></a>4.复制初始模板到你的项目中</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://raw.githubusercontent.com/gin-gonic/gin/master/examples/basic/main.go &gt; main.go</span><br></pre></td></tr></table></figure>
+<h5 id="5-运行你的项目"><a href="#5-运行你的项目" class="headerlink" title="5.运行你的项目"></a>5.运行你的项目</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go run main.go</span><br></pre></td></tr></table></figure>
+
+<p>OK, 至此呢，一个简单的gin 项目的demo就跑起来了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://hawli.cn/2017/11/10/PythonHooking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -321,7 +436,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -334,7 +449,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

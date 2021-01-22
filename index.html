@@ -163,7 +163,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://hawli.cn/2020/12/13/Raft%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="https://hawli.cn/2021/01/23/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AE%A1%E5%88%92-%E4%B8%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,7 +177,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/13/Raft%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">mit-6.824-Lab2(最后更新时间2020/12/13)</a>
+            <a href="/2021/01/23/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AE%A1%E5%88%92-%E4%B8%80/" class="post-title-link" itemprop="url">自学计算机科学计划<一>深入理解计算机系统</a>
         </h2>
 
         <div class="post-meta">
@@ -188,7 +188,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-12-13 14:49:00 / Modified: 15:34:41" itemprop="dateCreated datePublished" datetime="2020-12-13T14:49:00+08:00">2020-12-13</time>
+              <time title="Created: 2021-01-23 00:07:00 / Modified: 00:14:06" itemprop="dateCreated datePublished" datetime="2021-01-23T00:07:00+08:00">2021-01-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -196,7 +196,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mit6-824/" itemprop="url" rel="index"><span itemprop="name">mit6.824</span></a>
+                  <a href="/categories/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">自学计算机科学计划</span></a>
                 </span>
             </span>
 
@@ -210,8 +210,8 @@
       <span class="post-meta-item-text">Changyan: </span>
     
     
-      <a title="changyan" href="/2020/12/13/Raft%E4%BB%8B%E7%BB%8D/#SOHUCS" itemprop="discussionUrl">
-        <span id="url::https://hawli.cn/2020/12/13/Raft%E4%BB%8B%E7%BB%8D/" class="cy_cmt_count" data-xid="2020/12/13/Raft介绍/" itemprop="commentCount"></span>
+      <a title="changyan" href="/2021/01/23/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AE%A1%E5%88%92-%E4%B8%80/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2021/01/23/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AE%A1%E5%88%92-%E4%B8%80/" class="cy_cmt_count" data-xid="2021/01/23/自学计算机计划-一/" itemprop="commentCount"></span>
       </a>
     
   </span>
@@ -227,16 +227,83 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>mit 6.824是一个很好的学习分布式的项目<br>Lab2 是一个raft项目。</p>
-<h3 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h3><ul>
-<li><a href="%22https://pdos.csail.mit.edu/6.824/%22">项目主页</a></li>
-<li><a href="%22https://pdos.csail.mit.edu/6.824/labs/lab-raft.html%22">Lab2</a></li>
-<li><a href="%22https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf%22">论文地址</a></li>
-<li><a href="%22https://www.infoq.cn/article/raft-paper%22">中文翻译</a></li>
-</ul>
-<blockquote>
-<p>介绍<br><br>这是一系列实验中的第一个，你将在其中构建容错的键/值存储系统。在本实验中，你将实现Raft（复制状态机协议）。在下一个实验中，你将在Raft之上构建键/值服务。然后，你将在多个复制的状态机上“分片”服务，以提高性能。<br><br>复制服务通过将其状态（即数据）的完整副本存储在多个副本服务器上来实现容错功能。即使服务的某些服务器出现故障（崩溃，网络故障或不稳定），复制也可以使服务继续运行。挑战在于，故障可能导致副本持有不同的数据副本。<br><br><br>Raft将客户请求组织成一个序列，称为日志，并确保所有副本服务器看到相同的日志。每个副本都以日志顺序执行客户端请求，并将其应用于服务状态的本地副本。由于所有活动复本都看到相同的日志内容，因此它们都以相同的顺序执行相同的请求，因此继续具有相同的服务状态。如果服务器出现故障但后来又恢复了，Raft会确保其日志为最新状态。只要至少大多数服务器都处于活动状态并且可以相互通信，筏将继续运行。如果没有这样的多数，Raft将不会取得进展，但是一旦多数能够再次交流，它将从停下来的地方继续前进。<br><br><br>在本实验中，你将通过关联的方法将Raft实现为Go对象类型，该方法旨在用作更大服务中的模块。一组Raft实例与RPC相互通信以维护复制的日志。你的Raft界面将支持不定编号的命令序列，也称为日志条目。这些条目已用索引号编号。具有给定索引的日志条目最终将被提交。届时，你的Raft应该将日志条目发送到较大的服务，以便其执行。<br><br><br>你应该遵循扩展的Raft论文中的设计，尤其要注意图2。你将实现论文中的大部分内容，包括保存持久状态并在节点出现故障后重新读取它。你将不会实现集群成员资格更改（第6节）。你将在以后的实验中实现日志压缩/快照化（第7节）。<br><br><br>你可能会发现本指南很有用，以及有关锁定和并发结构的建议。从更广泛的角度来看，请查看Paxos，Chubby，Paxos Made Live，Spanner，Zookeeper，Harp，Viewstamped Replication和Bolosky等。<br><br><br>该实验分为三个部分。你必须在相应的截止日期之前提交每个零件。</p>
-</blockquote>
+          <p><img src="/images/pasted-1.png" alt="upload successful"><br>2021年，1月23日，京东下单买书。<br>下完单，我有点沮丧，随后陷入了深深的难过之中。</p>
+<p>为什么我离开学校这么久了，还没有读过这本书，以至于，工作了将近5年，还要从头学计算机。<br>曾经我还嘲笑过别人是假程序员。<br>原来小丑竟是我自己！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://hawli.cn/2021/01/23/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李科燃">
+      <meta itemprop="description" content="早告别青春，活成了别人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李科燃的主页">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/23/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="post-title-link" itemprop="url">自学计算机科学计划</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-23 00:06:22 / Modified: 00:07:10" itemprop="dateCreated datePublished" datetime="2021-01-23T00:06:22+08:00">2021-01-23</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2021/01/23/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/#SOHUCS" itemprop="discussionUrl">
+        <span id="url::https://hawli.cn/2021/01/23/%E8%87%AA%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6/" class="cy_cmt_count" data-xid="2021/01/23/自学计算机科学/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这篇博文是一个目录<br>后续的计划更新，可以在这里找到.</p>
 
       
     </div>
@@ -1197,121 +1264,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://hawli.cn/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="李科燃">
-      <meta itemprop="description" content="早告别青春，活成了别人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李科燃的主页">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/" class="post-title-link" itemprop="url">Gin 系列教程 (01)-介绍</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-04-02 15:36:00" itemprop="dateCreated datePublished" datetime="2018-04-02T15:36:00+08:00">2018-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-22 23:18:37" itemprop="dateModified" datetime="2020-07-22T23:18:37+08:00">2020-07-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Changyan: </span>
-    
-    
-      <a title="changyan" href="/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/#SOHUCS" itemprop="discussionUrl">
-        <span id="url::https://hawli.cn/2018/04/02/Gin-%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B-01/" class="cy_cmt_count" data-xid="2018/04/02/Gin-系列教程-01/" itemprop="commentCount"></span>
-      </a>
-    
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近由于工作需要，需要把部分接口迁移到Go语言上，优化部分性能。经过一番考察后，我选择了<a target="_blank" rel="noopener" href="https://github.com/gin-gonic/gin">gin</a>这款轻量级的web框架，用来开发restful api。<br><img src="https://raw.githubusercontent.com/gin-gonic/logo/master/color.png"><br>首先看一下官方的介绍：</p>
-<blockquote>
-<p>Gin is a web framework written in Go (Golang). It features a martini-&gt; like API with much better performance, up to 40 times faster thanks &gt; to httprouter. If you need performance and good productivity, you &gt; will love Gin.</p>
-</blockquote>
-<p> 据说性能是martini的40倍，好吧，martini我也没接触过。</p>
-<p> 然后看官方给出的一个例子：</p>
- <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.GET(<span class="string">&quot;/ping&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		c.JSON(<span class="number">200</span>, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;message&quot;</span>: <span class="string">&quot;pong&quot;</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line">	r.Run() <span class="comment">// listen and serve on 0.0.0.0:8080</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> 然后运行这个例子， 默认是监听8080端口<br> <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go run example.go</span><br></pre></td></tr></table></figure></p>
-<h3 id="下载和安装"><a href="#下载和安装" class="headerlink" title="下载和安装"></a>下载和安装</h3> <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go get github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure>
-<p> 这里要提到一个小技巧，国内由于各种原因，导致go get 几乎处于不可用的状态，如果你有ss的话，可以使用<a target="_blank" rel="noopener" href="https://github.com/cyfdecyf/cow">cow</a>这个工具，把go get 的http请求转发给ss代理，这样在命令行里使用go get 就会比较顺畅了。</p>
-<ul>
-<li>import<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="govendor"><a href="#govendor" class="headerlink" title="govendor"></a><a target="_blank" rel="noopener" href="https://github.com/kardianos/govendor">govendor</a></h3><p>也可以使用govendor这样的工具，来构建项目。</p>
-<h5 id="1-安装govendor"><a href="#1-安装govendor" class="headerlink" title="1.安装govendor"></a>1.安装govendor</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go get github.com/kardianos/govendor</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-创建你的项目文件夹"><a href="#2-创建你的项目文件夹" class="headerlink" title="2.创建你的项目文件夹"></a>2.创建你的项目文件夹</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p <span class="variable">$GOPATH</span>/src/github.com/myusername/project &amp;&amp; <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$_</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="3-初始化项目并安装gin"><a href="#3-初始化项目并安装gin" class="headerlink" title="3.初始化项目并安装gin"></a>3.初始化项目并安装gin</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ govendor init</span><br><span class="line">$ govendor fetch github.com/gin-gonic/gin@v1.2</span><br></pre></td></tr></table></figure>
-
-<h5 id="4-复制初始模板到你的项目中"><a href="#4-复制初始模板到你的项目中" class="headerlink" title="4.复制初始模板到你的项目中"></a>4.复制初始模板到你的项目中</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://raw.githubusercontent.com/gin-gonic/gin/master/examples/basic/main.go &gt; main.go</span><br></pre></td></tr></table></figure>
-<h5 id="5-运行你的项目"><a href="#5-运行你的项目" class="headerlink" title="5.运行你的项目"></a>5.运行你的项目</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go run main.go</span><br></pre></td></tr></table></figure>
-
-<p>OK, 至此呢，一个简单的gin 项目的demo就跑起来了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1381,7 +1333,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1394,7 +1346,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
